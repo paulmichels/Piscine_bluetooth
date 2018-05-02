@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!-- Note:  android:checkableBehavior="single" -->
+<group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_bluetooth"
+        android:icon="@drawable/ic_bluetooth"
+        android:title="Bluetooth" />
+    <item
+        android:id="@+id/nav_pool"
+        android:icon="@drawable/ic_pool"
+        android:title="Données" />
+    <item
+        android:id="@+id/nav_sms"
+        android:icon="@drawable/ic_sms"
+        android:title="Alerter pisciniste" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Paramètres" />
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_about"
+        android:title="A propos" />
+    <item
+        android:id="@+id/nav_quit"
+        android:icon="@drawable/ic_power"
+        android:title="Quitter" />
+</group>
+
+</menu>

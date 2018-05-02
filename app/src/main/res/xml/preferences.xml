@@ -1,0 +1,58 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Paramètres flotteur">
+
+        <ListPreference
+            android:key="key_refresh_frequency"
+            android:title="Rafraîchissement des données"
+            android:summary="5 secondes"
+            android:defaultValue="5 secondes"
+            android:entries="@array/multi_select_list_preference"
+            android:entryValues="@array/multi_select_list_preference"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Pisciniste">
+
+        <EditTextPreference
+            android:key="key_phone_number"
+            android:title="Numéro du pisciniste"
+            android:inputType="phone"
+            android:dialogMessage="Entrez le numéro du pisciniste"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Mes coordonnées">
+
+        <EditTextPreference
+            android:key="key_name"
+            android:title="Prénom"
+            android:dialogMessage="Entrez votre prénom"/>
+
+        <EditTextPreference
+            android:key="key_surname"
+            android:title="Nom"
+            android:dialogMessage="Entrez votre nom"/>
+
+        <EditTextPreference
+            android:key="key_address"
+            android:title="Adresse"
+            android:dialogMessage="Entrez votre adresse"/>
+
+        <EditTextPreference
+            android:key="key_postal_code"
+            android:title="Code postal"
+            android:inputType="number"
+            android:dialogMessage="Entrez votre code postal"/>
+
+        <EditTextPreference
+            android:key="key_city"
+            android:title="Ville"
+            android:dialogMessage="Entrez votre ville"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
