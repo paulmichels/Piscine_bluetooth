@@ -27,6 +27,7 @@ public class SampleGattAttributes {
     public static String ANALOG_MEASUREMENT_PH = "00002a58-0001-1000-8000-00805f9b34fb";
     public static String ANALOG_MEASUREMENT_TEMPERATURE = "00002a58-0002-1000-8000-00805f9b34fb";
     public static String ANALOG_MEASUREMENT_REDOX = "00002a58-0003-1000-8000-00805f9b34fb";
+    public static String ANALOG_MEASUREMENT_BILAN = "00002a58-0005-1000-8000-00805f9b34fb";
     public static String ANALOG_MEASUREMENT_ALERT = "00002a58-0004-1000-8000-00805f9b34fb";
     public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
@@ -39,6 +40,7 @@ public class SampleGattAttributes {
         attributes.put(ANALOG_MEASUREMENT_TEMPERATURE, "Mesure Temperature");
         attributes.put(ANALOG_MEASUREMENT_REDOX, "Mesure Vredox");
         attributes.put(ANALOG_MEASUREMENT_ALERT, "Alerte");
+        attributes.put(ANALOG_MEASUREMENT_BILAN, "Mesure Bilan");
         attributes.put("00002a29-0000-1000-8000-00805f9b34fb", "Manufacturer Name String");
     }
 

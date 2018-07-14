@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.piscineble.snir.SNIRPiscineBluetooth.fragments.DataDetailsFragment;
-import com.piscineble.snir.SNIRPiscineBluetooth.fragments.DataOverviewFragment;
+import com.piscineble.snir.SNIRPiscineBluetooth.fragments.DataFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
@@ -23,7 +23,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                DataOverviewFragment dataFragment = DataOverviewFragment.newInstance(mBluetoothDevice);
+                DataFragment dataFragment = DataFragment.newInstance(mBluetoothDevice);
                 return dataFragment;
             case 1:
                 DataDetailsFragment dataDetailsFragment = DataDetailsFragment.newInstance(mBluetoothDevice);

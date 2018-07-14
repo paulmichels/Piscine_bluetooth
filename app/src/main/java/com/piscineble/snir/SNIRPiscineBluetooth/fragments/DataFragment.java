@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DataOverviewFragment extends Fragment {
+public class DataFragment extends Fragment {
 
     private BluetoothAdapter mBluetoothAdapter;
     public final static String DATA_NOTIFICATION =
@@ -38,23 +37,24 @@ public class DataOverviewFragment extends Fragment {
     private String mDeviceName;
     private String mDeviceAddress;
 
-    private double pH, temperature, redox;
+    private double pH, temperature, redox, bilan;
 
     private static final int REQUEST_ENABLE_BT = 1;
 
     private BluetoothDevice mBluetoothDevice;
 
-    public DataOverviewFragment() {
+    public DataFragment() {
         // Required empty public constructor
     }
 
-    public static DataOverviewFragment newInstance(BluetoothDevice bluetoothDevice) {
-        DataOverviewFragment dataOverviewFragment = new DataOverviewFragment();
+    public static DataFragment newInstance(BluetoothDevice bluetoothDevice) {
+        DataFragment dataOverviewFragment = new DataFragment();
         Bundle args = new Bundle();
         args.putParcelable("device", bluetoothDevice);
         dataOverviewFragment.setArguments(args);
         return dataOverviewFragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +134,7 @@ public class DataOverviewFragment extends Fragment {
         data = new Data("Potentiel d'Oxydo-Réduction", redox, null);
         mDataList.add(data);
 
-        data = new Data("Bilan de votre piscine", 0, null);
+        data = new Data("Bilan de votre piscine", bilan, null);
         mDataList.add(data);
 
         mAdapter.notifyDataSetChanged();
@@ -146,6 +146,7 @@ public class DataOverviewFragment extends Fragment {
             pH=Double.parseDouble(intent.getStringExtra("ph"));
             temperature=Double.parseDouble(intent.getStringExtra("temperature"));
             redox=Double.parseDouble(intent.getStringExtra("redox"));
+            bilan=Double.parseDouble(intent.getStringExtra("bilan"));
             updateRecyclerView();
         }
     };

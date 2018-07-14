@@ -1,8 +1,4 @@
 <resources>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="app_name">SNIR Piscine BLE Menu</string>
 
@@ -17,50 +13,14 @@
     <string name="app">Application</string>
     <string name="app_description">Application développée dans le cadre de l\'épreuve E6.2 pour le BTS Système Numérique 2018.\nCette application utilise la technologie Bluetooth Low Energy pour se connecter à un flotteur disposé dans une piscine, récupérant les données receuillies.\nCes données sont affichées à l\'utilisateur en temps réel.</string>
 
-    <string name="bluetooth">Bluetooth</string>
-    <string name="searching_devices">Rechercher des périphériques</string>
-    <string name="data">Données</string>
-    <string name="display_data_pool">Afficher les données de ma piscine</string>
-    <string name="about_app">A propos de l\'application</string>
-    <string name="about">À propos</string>
-    <string name="quit">Quitter</string>
-    <string name="close_app">Fermer l\'application SNIR Piscine BLE</string>
-
-
-    <string name="paired_devices">Périphériques associés</string>
-    <string name="found_devices">Appareils trouvés</string>
-
-    <string name="bl_settings">Paramètres Bluetooth</string>
-
 
     <string name="ble_not_supported"> Le BLE n\'est pas pris en charge</string>
-    <string name="label_data">Données :</string>
-    <string name="label_device_address">Adresse de l\'appareil :</string>
-    <string name="label_state">État :</string>
-    <string name="no_data">Aucune Données</string>
-    <string name="connected">Connecté</string>
-    <string name="disconnected">Deconnecté</string>
     <string name="error_bluetooth_not_supported">Le Bluetooth n\'est pas pris en charge.</string>
 
-    <string name="unknown_device">Appareil inconnu</string>
     <string name="unknown_characteristic">Caractéristique inconnue</string>
     <string name="unknown_service">Service inconnu</string>
-    <string name="actualiser">Actualiser</string>
 
     <!-- Menu items -->
-    <string name="menu_connect">Connexion</string>
-    <string name="menu_disconnect">Deconnexion</string>
-    <string name="menu_scan">Scanner</string>
-    <string name="menu_stop">Arrêter</string>
-
-    <string name="faire_le_bilan_de_votre_piscine">Faire le bilan de votre piscine</string>
-    <string name="potentiel_d_oxydo_r_duction">Potentiel d\'oxydo-réduction</string>
-    <string name="t">T°</string>
-    <string name="ph">pH</string>
-
-    <string name="numero">Numero</string>
-    <string name="message">Message</string>
-    <string name="envoyer">Envoyer</string>
 
 
     <string-array name="multi_select_list_preference">
@@ -71,5 +31,4 @@
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

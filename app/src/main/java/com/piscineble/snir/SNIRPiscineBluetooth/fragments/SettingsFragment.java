@@ -10,7 +10,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.piscineble.snir.SNIRPiscineBluetooth.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {

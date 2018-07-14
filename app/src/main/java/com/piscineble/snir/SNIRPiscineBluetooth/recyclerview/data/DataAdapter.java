@@ -43,7 +43,16 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Data data = mDataList.get(position);
         holder.data.setText(data.getType());
-        holder.value.setText(String.valueOf(data.getValue()));
+        if(position==0){
+            holder.value.setText(String.valueOf(data.getValue()+" °C"));
+        } else if(position==1){
+            holder.value.setText(String.valueOf(data.getValue()));
+        } else if(position==2){
+            holder.value.setText(String.valueOf(data.getValue()+" mV"));
+        } else if(position==3){
+            holder.value.setText(String.valueOf(data.getValue()+" ppm"));
+        }
+
         holder.status.setText(data.getStatus());
 
         //TODO : CHANGER SELON LETAT (SE RENSEIGNER SUR LES VALEURS)

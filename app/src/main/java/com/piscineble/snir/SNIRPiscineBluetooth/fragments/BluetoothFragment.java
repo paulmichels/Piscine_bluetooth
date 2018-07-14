@@ -4,21 +4,16 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,9 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static android.content.ContentValues.TAG;
-import static android.content.Context.BIND_AUTO_CREATE;
-
 
 //TODO : ESSAYER DE SE CONNECTER A UN AUTRE APPAREIL DEVRAIT DECONNECTER L'ANCIER ET TENTER DE SE CONNECTER AU NOUVEAU. ICI RIEN NE SE PASSE : UNBINDSERVICE?
 //TODO : ATTENDRE LA REPONSE DU BROADCAST AVANT DE POUVOIR FAIRE UNE AUTRE ACTION (APRES AVOIR RESOLU LE PROBLEME DE LA DEUXIEME CONNEXION BIEN SUR)
@@ -52,7 +44,7 @@ import static android.content.Context.BIND_AUTO_CREATE;
 
 public class BluetoothFragment extends Fragment {
 
-    private bluetoothFragmentCallBack mListener;
+    private bluetoothFragmentCallback mListener;
 
     private List<BluetoothDevice> mFoundDeviceList = new ArrayList<>();
     private List<BluetoothDevice> mPairedDeviceList = new ArrayList<>();
@@ -160,8 +152,8 @@ public class BluetoothFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof bluetoothFragmentCallBack) {
-            mListener = (bluetoothFragmentCallBack) context;
+        if (context instanceof bluetoothFragmentCallback) {
+            mListener = (bluetoothFragmentCallback) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -318,7 +310,7 @@ public class BluetoothFragment extends Fragment {
     };
 
     //L'INTERFACE QUI PERMET DE COMMUNIQUER AVEC L'ACTIVITE QUI CONTIENT CE FRAGMENT
-    public interface bluetoothFragmentCallBack {
+    public interface bluetoothFragmentCallback {
         public void onItemSelected(BluetoothDevice bluetoothDevice);
     }
 

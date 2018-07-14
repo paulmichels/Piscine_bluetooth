@@ -36,7 +36,7 @@ import com.piscineble.snir.SNIRPiscineBluetooth.bluetooth.BluetoothLeService;
 import com.piscineble.snir.SNIRPiscineBluetooth.bluetooth.SampleGattAttributes;
 import com.piscineble.snir.SNIRPiscineBluetooth.fragments.AboutFragment;
 import com.piscineble.snir.SNIRPiscineBluetooth.fragments.BluetoothFragment;
-import com.piscineble.snir.SNIRPiscineBluetooth.fragments.DataOverviewFragment;
+import com.piscineble.snir.SNIRPiscineBluetooth.fragments.DataFragment;
 import com.piscineble.snir.SNIRPiscineBluetooth.fragments.SMSFragment;
 import com.piscineble.snir.SNIRPiscineBluetooth.fragments.SettingsFragment;
 
@@ -46,23 +46,22 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-//TODO RFRAICHISSEMENT PREFERENCES
 public class DrawerBase extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        BluetoothFragment.bluetoothFragmentCallBack{
+        BluetoothFragment.bluetoothFragmentCallback {
 
     private BluetoothAdapter mBluetoothAdapter;
     private static final int REQUEST_ENABLE_BT = 1;
     private BluetoothDevice mConnectedBluetoothDevice, mBluetoothDevice;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
-    private Handler handler1, handler2, handler3, handler4;
+    private Handler handler1, handler2, handler3, handler4, handler5;
 
-    private double pH, temperature, redox;
+    private double pH, temperature, redox, bilan;
     public final static String DATA_NOTIFICATION =
             "com.example.bluetooth.le.DATA_NOTIFICATION";
 
-    private int pHCharacteristicProperties, temperatureCharacteristicProperties, redoxCharacteristicProperties;
+    private int pHCharacteristicProperties, temperatureCharacteristicProperties, redoxCharacteristicProperties, bilanCharacteristicProperties;
 
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics = new ArrayList<>();
     private ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<>();
@@ -76,8 +75,8 @@ public class DrawerBase extends AppCompatActivity
 
     private BluetoothGattCharacteristic mNotifyCharacteristic;
 
-    private final String LIST_NAME = "NAME";
-    private final String LIST_UUID = "UUID";
+    private final String listName = "NAME";
+    private final String listUUID = "UUID";
 
 
     @Override
@@ -163,7 +162,7 @@ public class DrawerBase extends AppCompatActivity
         if (id == R.id.nav_bluetooth) {
             fragment = BluetoothFragment.newInstance(mConnectedBluetoothDevice);
         } else if (id == R.id.nav_pool) {
-            fragment = DataOverviewFragment.newInstance(mConnectedBluetoothDevice);
+            fragment = DataFragment.newInstance(mConnectedBluetoothDevice);
 
         } else if (id == R.id.nav_sms) {
             fragment = new SMSFragment();
@@ -207,11 +206,6 @@ public class DrawerBase extends AppCompatActivity
 
     @Override
     public void onItemSelected(BluetoothDevice bluetoothDevice){
-        /*
-        if(mConnectedBluetoothDevice!=null){
-            mBluetoothLeService.disconnect();
-            unbindService(mServiceConnection);
-        }*/
         connect(bluetoothDevice);
     }
 
@@ -250,6 +244,9 @@ public class DrawerBase extends AppCompatActivity
                 if(handler3!=null){
                     handler3.removeCallbacks(runnable3);
                 }
+                if(handler4!=null){
+                    handler4.removeCallbacks(runnable4);
+                }
 
             }else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
@@ -261,20 +258,29 @@ public class DrawerBase extends AppCompatActivity
                 handler3.post(runnable3);
                 handler4 = new Handler();
                 handler4.post(runnable4);
+                handler5 = new Handler();
+                handler5.post(runnable5);
 
             }else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                if(intent.getStringExtra(BluetoothLeService.EXTRA_DATA).equals("PH")){
-                    pH=Double.parseDouble(intent.getStringExtra(BluetoothLeService.PH_DATA));
-                } else if (intent.getStringExtra(BluetoothLeService.EXTRA_DATA).equals("TEMPERATURE")){
-                    temperature=Double.parseDouble(intent.getStringExtra(BluetoothLeService.TEMPERATURE_DATA));
-                } else if (intent.getStringExtra(BluetoothLeService.EXTRA_DATA).equals("REDOX")){
-                    redox=Double.parseDouble(intent.getStringExtra(BluetoothLeService.REDOX_DATA));
-                }
-                //Log.i("DONNEES RECUES", "PH = "+pH+"\nTEMPERATURE = "+temperature+"\nREDOX = "+redox);
+                if(intent.getStringExtra(BluetoothLeService.EXTRA_DATA)!=null){
+                    if(intent.getStringExtra(BluetoothLeService.EXTRA_DATA).equals("PH")){
+                        pH=Double.parseDouble(intent.getStringExtra(BluetoothLeService.PH_DATA));
+                    } else if (intent.getStringExtra(BluetoothLeService.EXTRA_DATA).equals("TEMPERATURE")){
+                        temperature=Double.parseDouble(intent.getStringExtra(BluetoothLeService.TEMPERATURE_DATA));
+                    } else if (intent.getStringExtra(BluetoothLeService.EXTRA_DATA).equals("REDOX")){
+                        redox=Double.parseDouble(intent.getStringExtra(BluetoothLeService.REDOX_DATA));
+                    } else if (intent.getStringExtra(BluetoothLeService.EXTRA_DATA).equals("BILAN")){
+                        bilan=Double.parseDouble(intent.getStringExtra(BluetoothLeService.BILAN_DATA));
+                    }
+
+
+            }
+
+                Log.i("DONNEES RECUES", "PH = "+pH+"\nTEMPERATURE = "+temperature+"\nREDOX = "+redox+"\nBILAN = "+bilan);
             }
         }
     };
-
+    //
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         String uuid;
@@ -291,8 +297,8 @@ public class DrawerBase extends AppCompatActivity
                 marquer_rang_charac = true;
             }
             currentServiceData.put(
-                    LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
-            currentServiceData.put(LIST_UUID, uuid);
+                    listName, SampleGattAttributes.lookup(uuid, unknownServiceString));
+            currentServiceData.put(listUUID, uuid);
             gattServiceData.add(currentServiceData);
 
             List<BluetoothGattCharacteristic> gattCharacteristics =
@@ -305,12 +311,13 @@ public class DrawerBase extends AppCompatActivity
                 HashMap<String, String> currentCharaData = new HashMap<>();
                 uuid = gattCharacteristic.getUuid().toString();
                 currentCharaData.put(
-                        LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
-                currentCharaData.put(LIST_UUID, uuid);
+                        listName, SampleGattAttributes.lookup(uuid, unknownCharaString));
+                currentCharaData.put(listUUID, uuid);
                 gattCharacteristicGroupData.add(currentCharaData);
             }
 
             mGattCharacteristics.add(charas);
+            Log.i("APP", ""+charas);
             gattCharacteristicData.add(gattCharacteristicGroupData);
         }
     }
@@ -341,16 +348,25 @@ public class DrawerBase extends AppCompatActivity
         }
     };
 
-
     private Runnable runnable4 = new Runnable() {
+        @Override
+        public void run() {
+            getBilan();
+            handler3.postDelayed(runnable4, 2100);
+        }
+    };
+
+
+    private Runnable runnable5 = new Runnable() {
         @Override
         public void run() {
             Intent intent = new Intent(DATA_NOTIFICATION);
             intent.putExtra("ph",""+pH);
             intent.putExtra("temperature",""+temperature);
             intent.putExtra("redox",""+redox);
+            intent.putExtra("bilan", ""+bilan);
             sendBroadcast(intent);
-            handler4.postDelayed(runnable4, 5000);
+            handler4.postDelayed(runnable5, 5000);
         }
     };
 
@@ -410,6 +426,26 @@ public class DrawerBase extends AppCompatActivity
             mBluetoothLeService.setCharacteristicNotification(redoxCharacteristic, true);
         }
     }
+
+    private void getBilan() {
+        final BluetoothGattCharacteristic bilanCharacteristic =
+                charas.get(rang_charac);
+        bilanCharacteristicProperties = bilanCharacteristic.getProperties();
+        if ((bilanCharacteristicProperties | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+            // If there is an active notification on a characteristic, clear
+            // it first so it doesn't update the data field on the user interface.
+            if (mNotifyCharacteristic != null) {
+                mBluetoothLeService.setCharacteristicNotification(mNotifyCharacteristic, false);
+                mNotifyCharacteristic = null;
+            }
+            mBluetoothLeService.readCharacteristic(bilanCharacteristic);
+        }
+        if ((bilanCharacteristicProperties | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+            mNotifyCharacteristic = bilanCharacteristic;
+            mBluetoothLeService.setCharacteristicNotification(bilanCharacteristic, true);
+        }
+    }
+
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();

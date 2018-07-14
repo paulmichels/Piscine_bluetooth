@@ -1,6 +1,5 @@
 package com.piscineble.snir.SNIRPiscineBluetooth.recyclerview.phone;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.piscineble.snir.SNIRPiscineBluetooth.R;
-import com.piscineble.snir.SNIRPiscineBluetooth.recyclerview.data.Data;
-import com.piscineble.snir.SNIRPiscineBluetooth.recyclerview.data.DataAdapter;
 
 import java.util.List;
 

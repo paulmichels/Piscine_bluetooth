@@ -31,8 +31,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -68,6 +66,8 @@ public class BluetoothLeService extends Service {
             "com.example.bluetooth.le.TEMPERATURE_DATA";
     public final static String REDOX_DATA =
             "com.example.bluetooth.le.REDOX_DATA";
+    public final static String BILAN_DATA =
+            "com.example.bluetooth.le.BILAN_DATA";
     public final static String EXTRA_DATA =
             "com.example.bluetooth.le.EXTRA_DATA";
 
@@ -81,19 +81,15 @@ public class BluetoothLeService extends Service {
             UUID.fromString(SampleGattAttributes.ANALOG_MEASUREMENT_REDOX);
     public final static UUID UUID_ANALOG_MEASUREMENT4 =
             UUID.fromString(SampleGattAttributes.ANALOG_MEASUREMENT_ALERT);
+    public final static UUID UUID_ANALOG_MEASUREMENT5 =
+            UUID.fromString(SampleGattAttributes.ANALOG_MEASUREMENT_BILAN);
 
     public int valPH = 0;
     public int valTo = 0;
     public int valOx = 0;
+    public int valBilan = 0;
 
-    public static double pH = 0.0;
-    public final double To = 25.0;
-    public static double Ox = 0.0;
 
-    private final double Vref = 5.0; //Vref de CAN egale 3.3Volts
-
-    // Implements callback methods for GATT events that the app cares about.  For example,
-    // connection change and services discovered.
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -154,9 +150,7 @@ public class BluetoothLeService extends Service {
         format = BluetoothGattCharacteristic.FORMAT_UINT16;
 
         valPH = characteristic.getIntValue(format, 0);
-        pH = (valPH*(Vref/1024)-0.533)/0.267;
-        if (pH<0) pH = 0.0;
-        intent.putExtra(PH_DATA, ""+pH);
+        intent.putExtra(PH_DATA, ""+valPH);
 
         valTo = characteristic.getIntValue(format, 0);
         intent.putExtra(TEMPERATURE_DATA, ""+valTo);
@@ -164,12 +158,17 @@ public class BluetoothLeService extends Service {
         valOx = characteristic.getIntValue(format, 0);
         intent.putExtra(REDOX_DATA, ""+valOx);
 
+        valBilan = characteristic.getIntValue(format, 0);
+        intent.putExtra(BILAN_DATA, ""+ valBilan);
+
         if (UUID_ANALOG_MEASUREMENT.equals(characteristic.getUuid())) {
             intent.putExtra(EXTRA_DATA, "PH");
         } else if (UUID_ANALOG_MEASUREMENT2.equals(characteristic.getUuid())) {
             intent.putExtra(EXTRA_DATA, "TEMPERATURE");
         } else if (UUID_ANALOG_MEASUREMENT3.equals(characteristic.getUuid())) {
             intent.putExtra(EXTRA_DATA, "REDOX");
+        } else if (UUID_ANALOG_MEASUREMENT5.equals(characteristic.getUuid())) {
+            intent.putExtra(EXTRA_DATA, "BILAN");
         }
 
         sendBroadcast(intent);
@@ -339,6 +338,11 @@ public class BluetoothLeService extends Service {
             mBluetoothGatt.writeDescriptor(descriptor);
         }
         if (UUID_ANALOG_MEASUREMENT4.equals(characteristic.getUuid())) {
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(descriptor);
+        }
+        if (UUID_ANALOG_MEASUREMENT5.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             mBluetoothGatt.writeDescriptor(descriptor);
